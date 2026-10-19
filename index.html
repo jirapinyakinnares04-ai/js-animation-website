@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATELIER FORMA — Sculptural Signage & Kinetic JavaScript Website</title>
+  <meta name="description" content="An interactive architectural 3D animation website showcasing minimalist sculptural signage with physics-based kinetic animations, raycast lighting, and procedural Web Audio.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Custom Inertial Mouse Cursor -->
+  <div class="custom-cursor">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+  </div>
+
+  <!-- Background Ambient Dust & Particle Mesh -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-wrapper">
+    <!-- Navigation Bar -->
+    <header class="navbar">
+      <a href="#hero" class="brand">
+        <div class="brand-icon">F</div>
+        <div class="brand-name">Atelier Forma</div>
+        <span class="brand-tag">Kinetic Signage</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active">Sculpture 3D</a></li>
+        <li><a href="#sandbox" class="nav-link">Physics Sandbox</a></li>
+        <li><a href="#collections" class="nav-link">Collections</a></li>
+        <li><a href="#features" class="nav-link">Engineering</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Procedural Web Audio Synthesizer Button -->
+        <button id="audio-toggle-btn" class="audio-btn" title="Toggle Procedural Web Audio">
+          <div class="audio-waves">
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+          </div>
+          <span class="audio-text">Audio: OFF</span>
+        </button>
+
+        <!-- Material Finish Preset Switcher -->
+        <div class="theme-picker" title="Change Material Finish">
+          <button class="theme-pill active" data-set-theme="porcelain" title="Porcelain Matte"></button>
+          <button class="theme-pill" data-set-theme="obsidian" title="Obsidian Dark"></button>
+          <button class="theme-pill" data-set-theme="gold" title="Champagne Gold"></button>
+          <button class="theme-pill" data-set-theme="titanium" title="Titanium Brushed"></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Hero Section -->
+    <main>
+      <section id="hero" class="hero-section">
+        <div class="hero-content">
+          <div class="hero-subtitle-badge">
+            <span class="badge-pulse"></span>
+            Sculptural Signage Edition
+          </div>
+
+          <h1 class="hero-title">
+            The Art of <span>Kinetic</span> Form & Silhouette.
+          </h1>
+
+          <p class="hero-description">
+            Transforming minimalist restroom iconography into tactile, 
+            three-dimensional porcelain sculptures. Responsive to raycast lighting, 
+            3D perspective tilting, and physics-driven spring mechanics.
+          </p>
+
+          <div class="hero-ctas">
+            <a href="#sandbox" class="btn-primary">
+              Experience Sandbox
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="#collections" class="btn-secondary">View Collection</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-value">60 FPS</span>
+              <span class="stat-label">Hardware Acceleration</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">0.08s</span>
+              <span class="stat-label">Spring Lerp Damping</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">100%</span>
+              <span class="stat-label">Vanilla JavaScript</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Interactive Sculpture Stage -->
+        <div class="sculpture-viewport-wrapper">
+          <div id="sculpture-card" class="sculpture-card">
+            <div class="card-depth-grid"></div>
+            <div class="exploded-ghost-layer"></div>
+
+            <div class="sculpture-img-container">
+              <img src="assets/sculpture.jpg" alt="3D Porcelain Restroom Sculptural Signage" class="sculpture-img" id="main-sculpture">
+            </div>
+
+            <!-- Specular Light Reflection Overlay -->
+            <div id="specular-light" class="specular-light"></div>
+
+            <!-- Floating Micro Annotation Pins -->
+            <div class="annotation-pin pin-female">
+              <div class="pin-core"></div>
+              <div class="pin-tooltip">Folded Organic Drape & Flare</div>
+            </div>
+
+            <div class="annotation-pin pin-male">
+              <div class="pin-core"></div>
+              <div class="pin-tooltip">Split Tuxedo Lapel & Clean Taper</div>
+            </div>
+
+            <!-- Floating Studio Control Dock -->
+            <div class="studio-dock">
+              <button class="dock-btn active" data-mode="default">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                3D Tilt & Light
+              </button>
+              <button class="dock-btn" data-mode="exploded">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Exploded View
+              </button>
+              <button class="dock-btn" data-mode="kinetic">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M2 6h20M2 18h20"></path></svg>
+                Kinetic Pulse
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kinetic Physics Ribbon & Pearl Sandbox -->
+      <section id="sandbox" class="section-padding">
+        <div class="section-header">
+          <span class="section-tag">Interactive Physics Lab</span>
+          <h2 class="section-title">Verlet Ribbon & Particle Dynamics</h2>
+          <p class="section-desc">
+            Move your cursor through the canvas to slice dynamic drag forces across elastic Bézier ribbons. 
+            Click anywhere to spawn physical porcelain spheres with collision & gravity.
+          </p>
+        </div>
+
+        <div class="sandbox-card">
+          <canvas id="physics-canvas"></canvas>
+
+          <div class="sandbox-overlay-controls">
+            <div class="sandbox-hint">Hover swiftly to create aerodynamic drag waves &bull; Click to drop beads</div>
+            <div class="sandbox-action-group">
+              <button class="sandbox-btn" onclick="window.kineticSandbox && window.kineticSandbox.triggerPulse()">
+                Impulse Burst
+              </button>
+              <button class="sandbox-btn" onclick="window.kineticSandbox && window.kineticSandbox.reset()">
+                Reset Lab
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Signature Collections Horizontal Momentum Carousel -->
+      <section id="collections" class="section-padding">
+        <div class="section-header">
+          <span class="section-tag">Architectural Signage Series</span>
+          <h2 class="section-title">Curated Sculptural Editions</h2>
+          <p class="section-desc">
+            Drag horizontally with fluid momentum physics to explore variations crafted for premier museums, luxury resorts, and modernist residences.
+          </p>
+        </div>
+
+        <div class="carousel-viewport" id="carousel-viewport">
+          <div class="carousel-track" id="carousel-track">
+            
+            <!-- Item 1 -->
+            <div class="collection-card">
+              <div class="card-preview-box">
+                <svg class="card-svg-preview" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                  <circle cx="50" cy="20" r="12" fill="currentColor" fill-opacity="0.12" stroke-width="2.5"/>
+                  <path d="M50 34 C42 45, 30 65, 25 80 C40 76, 60 76, 75 80 C70 65, 58 45, 50 34 Z" fill="currentColor" fill-opacity="0.15" stroke-width="2"/>
+                  <path d="M47 36 C49 52, 53 68, 55 78" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="card-series-no">NO. 01 / FORM FEMME</div>
+              <h3 class="card-item-title">The Flared Silhouette</h3>
+              <p class="card-item-desc">
+                Sculpted with organic draping inspired by haute couture gowns, cast in ultra-fine porcelain with subtle satin micro-textures.
+              </p>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="collection-card">
+              <div class="card-preview-box">
+                <svg class="card-svg-preview" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                  <circle cx="50" cy="20" r="12" fill="currentColor" fill-opacity="0.12" stroke-width="2.5"/>
+                  <path d="M38 35 L48 88 L52 88 L62 35 Z" fill="currentColor" fill-opacity="0.15" stroke-width="2"/>
+                  <line x1="50" y1="35" x2="50" y2="82" stroke-width="2" stroke-dasharray="2 3"/>
+                </svg>
+              </div>
+              <div class="card-series-no">NO. 02 / FORM HOMME</div>
+              <h3 class="card-item-title">The Tailored Monolith</h3>
+              <p class="card-item-desc">
+                Architectural split-lapel geometry tapering down to a refined datum point. Engineered for crisp shadow projection under directional downlights.
+              </p>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="collection-card">
+              <div class="card-preview-box">
+                <svg class="card-svg-preview" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                  <circle cx="50" cy="20" r="12" fill="currentColor" fill-opacity="0.12" stroke-width="2.5"/>
+                  <path d="M35 40 C42 55, 38 72, 34 85 C46 80, 54 80, 66 85 C62 72, 58 55, 65 40 Z" fill="currentColor" fill-opacity="0.15" stroke-width="2"/>
+                  <circle cx="50" cy="55" r="5" fill="currentColor" fill-opacity="0.4"/>
+                </svg>
+              </div>
+              <div class="card-series-no">NO. 03 / FORM ALL-GENDER</div>
+              <h3 class="card-item-title">Universal Convergence</h3>
+              <p class="card-item-desc">
+                A seamless synthesis harmonizing sharp lapel creases with fluid ribbon contours. Designed for universal and inclusive architectural spaces.
+              </p>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="collection-card">
+              <div class="card-preview-box">
+                <svg class="card-svg-preview" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                  <rect x="25" y="25" width="50" height="50" rx="14" fill="currentColor" fill-opacity="0.12" stroke-width="2.5"/>
+                  <circle cx="40" cy="40" r="4" fill="currentColor"/>
+                  <circle cx="60" cy="40" r="4" fill="currentColor"/>
+                  <circle cx="50" cy="60" r="5" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="card-series-no">NO. 04 / FORM TACTILE</div>
+              <h3 class="card-item-title">Tactile Accessible</h3>
+              <p class="card-item-desc">
+                Integrated tactile relief contours and Grade 2 Braille datum points, meeting ADA accessibility guidelines while preserving pure sculptural beauty.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Engineering & Animation Architecture Section -->
+      <section id="features" class="section-padding">
+        <div class="section-header">
+          <span class="section-tag">JavaScript Engineering</span>
+          <h2 class="section-title">Crafted with Pure Kinetic Math</h2>
+          <p class="section-desc">
+            No heavy third-party bundles. Built on native browser APIs, hardware-accelerated transforms, and mathematical physics algorithms.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-box">
+            <div class="feature-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            </div>
+            <h3 class="feature-title">Verlet Integration</h3>
+            <p class="feature-desc">
+              Multi-node elastic constraints and velocity vectors render realistic ribbon fabric drape and collision behavior at steady 60 FPS.
+            </p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </div>
+            <h3 class="feature-title">Dynamic Raycast Lighting</h3>
+            <p class="feature-desc">
+              Cursor coordinates dynamically calculate light incidence vectors, modulating specular reflections and casting proportional soft drop shadows.
+            </p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            </div>
+            <h3 class="feature-title">Web Audio Synthesizer</h3>
+            <p class="feature-desc">
+              A procedural harmonic acoustic engine synthesizing sinusoidal micro-chimes, ceramic clicks, and resonant chords with zero audio file downloads.
+            </p>
+          </div>
+
+          <div class="feature-box">
+            <div class="feature-icon-wrapper">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+            <h3 class="feature-title">3D Perspective Matrix</h3>
+            <p class="feature-desc">
+              Euler pitch-and-yaw transformations coupled with 0.08 spring lerp interpolation create responsive, tactile depth with zero jitter.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>ATELIER FORMA</h3>
+          <p>Kinetic architectural design & sculptural signage system created with modern JavaScript and hardware-accelerated CSS 3D.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Experiences</h4>
+            <ul>
+              <li><a href="#hero">3D Stage</a></li>
+              <li><a href="#sandbox">Verlet Physics</a></li>
+              <li><a href="#collections">Signage Series</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Technologies</h4>
+            <ul>
+              <li><a href="#">Canvas 2D Engine</a></li>
+              <li><a href="#">Web Audio API</a></li>
+              <li><a href="#">CSS 3D Transforms</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 ATELIER FORMA. All kinetic algorithms crafted with Vanilla JavaScript.</div>
+        <div>Smooth 60 FPS Engine &bull; Zero External Dependencies</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/physics.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
